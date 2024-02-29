@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import "./App.css";
+import Card from "./Components/Card";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [nombrePelicula, setNombrePelicula] = React.useState("");
+  const [comentarios, setComentarios] = React.useState("");
+  const [show, setShow] = React.useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const nombrePeliculaSinEspacio = nombrePelicula.trim();
+    if (nombrePeliculaSinEspacio.length >= 3 && comentarios.length >= 6) {
+      setShow(true)
+    } else {
+      alert("Por favor chequea que la información sea correcta");
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <h1>Mis películas favoritas</h1>
+
+      {!show && (
+        <div>
+          <form onSubmit={handleSubmit}>
+            <label>Película favorita: </label>
+            <input
+              type="text"
+              id="nombrePelicula"
+              name="nombrePelicula"
+              value={nombrePelicula}
+              onChange={(e) => setNombrePelicula(e.target.value)}
+            ></input>
+
+            <label>Comentarios: </label>
+            <input
+              type="text"
+              id="comentarios"
+              name="comentarios"
+              value={comentarios}
+              onChange={(e) => setComentarios(e.target.value)}
+            ></input>
+
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+      )}
+
+      {show && (
+        <Card nombrePelicula={nombrePelicula} comentarios={comentarios} />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
